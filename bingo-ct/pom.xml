@@ -141,7 +141,7 @@
 				<artifactId>heroku-maven-plugin</artifactId>
 				<version>2.0.16</version>
 				<configuration>
-					<appName>bingo-ct</appName>
+					<appName>antonius</appName>
 				</configuration>
 			</plugin>
 			
@@ -150,7 +150,8 @@
 
     <profiles>
         <profile>
-            <!-- Production mode is activated using -Pproduction -->
+            <!-- Production mode is activated using -Pproduction 
+            -->
             <id>production</id>
             <properties>
                 <vaadin.productionMode>true</vaadin.productionMode>

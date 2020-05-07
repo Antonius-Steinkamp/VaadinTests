@@ -51,7 +51,7 @@ public class MainView extends VerticalLayout implements ComponentEventListener<C
 	private Registration broadcasterRegistration;
 
     public MainView() {
-    	add(new H2("Bingo"));
+    	add(new H2("Bingo by c't and anst"));
 		add(new Label("Langeweile bei Besprechungen im täglichen Büroalltag oder zu viel Bullshit? Mit diesem Spiel geht das vorbei. Einfach beim Bingo spielen aufmerksam zuhören. Fällt eines der auf dem Spielfeld gelisteten Worte, kann dieses markiert werden. Eine komplette Reihe horizontal, vertikal oder diagonal? Bingo!"));
 		add(new H6(""));
 		
