@@ -46,10 +46,10 @@ public class FilesystemView extends VerticalLayout //
 	private void initData() {
 		log.info("Init for " + rootFile.getAbsolutePath());
 		
-		grid.addHierarchyColumn(File::getAbsolutePath).setHeader("name");
-		grid.addColumn(this, "last Modified").setHeader("last Modified");
-		grid.addColumn(new AccessProvider(), "rwx").setHeader("rwx");
-		grid.addColumn(new SizeProvider(), "size").setHeader("size");
+		grid.addHierarchyColumn(File::getAbsolutePath).setHeader("name").setResizable(true);
+		grid.addColumn(this, "last Modified").setHeader("last Modified").setResizable(true);
+		grid.addColumn(new AccessProvider(), "rwx").setHeader("rwx").setResizable(true);
+		grid.addColumn(new SizeProvider(), "size").setHeader("size").setResizable(true);
 		
 		grid.addExpandListener(this);
 
