@@ -1,22 +1,29 @@
 package de.anst.filesystem;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.Grid.SelectionMode;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.treegrid.ExpandEvent;
 import com.vaadin.flow.component.treegrid.TreeGrid;
 import com.vaadin.flow.data.provider.hierarchy.TreeData;
+import com.vaadin.flow.data.selection.SelectionEvent;
+import com.vaadin.flow.data.selection.SelectionListener;
 import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
@@ -33,10 +40,12 @@ public class FilesystemView extends VerticalLayout //
 		implements //
 		ComponentEventListener<ExpandEvent<File, TreeGrid<File>>>, //
 		ValueProvider<File, String>, //
-		HasUrlParameter<String> {
+		HasUrlParameter<String>, //
+		SelectionListener<Grid<File>, File> {
 
 	private File rootFile = new File(System.getProperty("user.home"));
 	private TreeGrid<File> grid = new TreeGrid<>();
+	private TextArea fileContentsView = new TextArea();
 
 	public FilesystemView() {
 		add(new H1("Filesystem"));
@@ -45,20 +54,24 @@ public class FilesystemView extends VerticalLayout //
 
 	private void initData() {
 		log.info("Init for " + rootFile.getAbsolutePath());
-		
+
 		grid.addHierarchyColumn(File::getAbsolutePath).setHeader("name").setResizable(true);
 		grid.addColumn(this, "last Modified").setHeader("last Modified").setResizable(true);
 		grid.addColumn(new AccessProvider(), "rwx").setHeader("rwx").setResizable(true);
 		grid.addColumn(new SizeProvider(), "size").setHeader("size").setResizable(true);
-		
+
 		grid.addExpandListener(this);
+		grid.setSelectionMode(SelectionMode.SINGLE);
+		grid.addSelectionListener(this);
 
 		grid.getTreeData().addItem(null, rootFile);
 		addChildren(grid.getTreeData(), rootFile);
 
 		add(grid);
+		add(fileContentsView);
+		fileContentsView.setSizeFull();
 	}
-	
+
 	private TreeData<File> addChildren(final TreeData<File> treeData, final File directory) {
 		int childrenAdded = 0;
 		// set children
@@ -115,7 +128,7 @@ public class FilesystemView extends VerticalLayout //
 
 		@Override
 		public Long apply(File source) {
-			if ( source.isDirectory()) {
+			if (source.isDirectory()) {
 				File[] listFiles = source.listFiles();
 				if (listFiles != null) {
 					return Long.valueOf(listFiles.length);
@@ -123,7 +136,7 @@ public class FilesystemView extends VerticalLayout //
 			} else {
 				return Long.valueOf(source.length());
 			}
-			
+
 			return Long.valueOf(0);
 		}
 
@@ -145,5 +158,27 @@ public class FilesystemView extends VerticalLayout //
 			}
 		}
 		initData();
+	}
+
+	@Override // SelectionListener<Grid<File>, File>
+	public void selectionChange(SelectionEvent<Grid<File>, File> event) {
+		Optional<File> firstSelectedItem = event.getFirstSelectedItem();
+		if (firstSelectedItem.isPresent()) {
+			fileContentsView.setValue(readFile(firstSelectedItem.get()));
+		}
+	}
+
+	static String readFile(File file) {
+		return readFile(file, StandardCharsets.UTF_8);
+	}
+	
+	static String readFile(File file, Charset encoding) {
+		byte[] encoded = null;
+		try {
+			encoded = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
+		} catch (IOException e) {
+			return e.getLocalizedMessage();
+		}
+		return new String(encoded, encoding);
 	}
 }
