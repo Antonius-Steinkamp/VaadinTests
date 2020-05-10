@@ -32,7 +32,7 @@ import com.vaadin.flow.shared.Registration;
 
 @Route
 @Push
-@PWA(name = "bingo-ct", shortName = "bingo-ct")
+@PWA(name = "Antonius", shortName = "Antonius")
 public class MainView extends VerticalLayout implements ComponentEventListener<ClickEvent<Button>> {
 	
 	private static final long serialVersionUID = -8778411782845391587L;
