@@ -3,7 +3,6 @@ package de.anst.filesystem;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
@@ -48,7 +47,7 @@ public class FilesystemView extends VerticalLayout //
 	private TextArea fileContentsView = new TextArea();
 
 	public FilesystemView() {
-		add(new H1("Filesystem"));
+		add(new H1("Files"));
 
 	}
 
@@ -169,16 +168,16 @@ public class FilesystemView extends VerticalLayout //
 	}
 
 	static String readFile(File file) {
-		return readFile(file, StandardCharsets.UTF_8);
+		return readFile(file, Charset.defaultCharset());
 	}
 	
 	static String readFile(File file, Charset encoding) {
-		byte[] encoded = null;
+		byte[] bytesFromFile = null;
 		try {
-			encoded = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
+			bytesFromFile = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
 		} catch (IOException e) {
 			return e.getLocalizedMessage();
 		}
-		return new String(encoded, encoding);
+		return new String(bytesFromFile, encoding);
 	}
 }
