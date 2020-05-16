@@ -1,0 +1,69 @@
+package de.person;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import org.vaadin.crudui.crud.CrudListener;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import lombok.extern.java.Log;
+
+@Log
+public class PersonService implements CrudListener<Person> {
+
+	private static List<Person> allPersons = new ArrayList<>();
+
+	public PersonService() {
+		if (allPersons.size() == 0) {
+			allPersons.add(new Person(Long.valueOf(1), "Antonius", LocalDate.now(), "ansr@test.com", "pass"));
+			allPersons.add(new Person(Long.valueOf(2), "Bntonius", LocalDate.now(), "ansr@test.com", "pass"));
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.registerModule(new JavaTimeModule());
+			mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+			try {
+				allPersons = Arrays.asList(mapper.readValue(new File("C:\\Users\\Antonius\\workspaceX\\VaadinTests\\bingo-ct\\src\\main\\java\\de\\person\\PersonData.json"), Person[].class));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			log.info("Found " + allPersons.size() + " Persons");
+		}
+	}
+
+	@Override
+	public Person add(final Person p) {
+		allPersons.add(p);
+		return p;
+	}
+
+	@Override
+	public Collection<Person> findAll() {
+		return allPersons;
+	}
+
+	@Override
+	public Person update(Person p) {
+		if (allPersons.contains(p)) {
+			allPersons.remove(p);
+			allPersons.add(p);
+		}
+
+		return p;
+	}
+
+	@Override
+	public void delete(Person p) {
+		allPersons.remove(p);
+	}
+}

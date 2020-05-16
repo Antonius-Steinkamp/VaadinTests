@@ -69,6 +69,7 @@ public class FilesystemView extends VerticalLayout //
 		add(grid);
 		add(fileContentsView);
 		fileContentsView.setSizeFull();
+		fileContentsView.getStyle().set("font-family", "monospace");
 	}
 
 	private TreeData<File> addChildren(final TreeData<File> treeData, final File directory) {
