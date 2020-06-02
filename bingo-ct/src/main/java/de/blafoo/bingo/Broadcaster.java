@@ -8,7 +8,8 @@ import java.util.function.Consumer;
 import com.vaadin.flow.shared.Registration;
 
 /**
- * Klasse zum versenden von Push-Nachrichten
+ * Klasse zum Versenden von Push-Nachrichten
+ * 
  * https://vaadin.com/docs/v14/flow/advanced/tutorial-push-broadcaster.html
  */
 public class Broadcaster {

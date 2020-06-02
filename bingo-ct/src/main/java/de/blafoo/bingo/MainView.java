@@ -48,8 +48,6 @@ public class MainView extends VerticalLayout implements ComponentEventListener<C
 	/** Name des Spielers */
 	private String name = VaadinSession.getCurrent().getBrowser().getAddress();
 	
-	private Registration broadcasterRegistration;
-
     public MainView() {
     	add(new H2("Bingo by c't and anst"));
 		add(new Label("Langeweile bei Besprechungen im täglichen Büroalltag oder zu viel Bullshit? Mit diesem Spiel geht das vorbei. Einfach beim Bingo spielen aufmerksam zuhören. Fällt eines der auf dem Spielfeld gelisteten Worte, kann dieses markiert werden. Eine komplette Reihe horizontal, vertikal oder diagonal? Bingo!"));
@@ -188,7 +186,8 @@ public class MainView extends VerticalLayout implements ComponentEventListener<C
 		H1 h1 = new H1("BINGO!");
 		h1.getStyle().set("text-align", "center");
 
-		Image image = new Image("/images/bingo.png", "Bingo!");
+//		Image image = new Image("/images/bingo.png", "Bingo!");
+		Image image = new Image("/images/animiertes-feuerwerk-bild-0087.gif", "Bingo!");
 		
 		AudioPlayer player = new AudioPlayer("/images/bingo.m4a", true);
 		
@@ -197,7 +196,9 @@ public class MainView extends VerticalLayout implements ComponentEventListener<C
 		
 		Broadcaster.broadcast(name);
 	}
-	
+
+	private Registration broadcasterRegistration;
+
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		UI ui = attachEvent.getUI(); 

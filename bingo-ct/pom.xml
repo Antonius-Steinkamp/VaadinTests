@@ -119,6 +119,7 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.1.5.Final</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
@@ -126,6 +127,25 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>${jackson.version}</version>
+		</dependency>
+
+		<!-- Persistence with Xstream -->
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.11.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-core</artifactId>
+			<version>3.3.5.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.vaadin.marcus</groupId>
+			<artifactId>shortcut</artifactId>
+			<version>0.3.0</version>
 		</dependency>
 
 	</dependencies>

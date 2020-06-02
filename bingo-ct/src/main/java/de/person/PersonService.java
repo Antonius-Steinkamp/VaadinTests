@@ -2,6 +2,7 @@ package de.person;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,13 +11,13 @@ import java.util.List;
 
 import org.vaadin.crudui.crud.CrudListener;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import lombok.extern.java.Log;
 
+@SuppressWarnings("serial")
 @Log
 public class PersonService implements CrudListener<Person> {
 
@@ -32,7 +33,13 @@ public class PersonService implements CrudListener<Person> {
 			mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
 			try {
-				allPersons = Arrays.asList(mapper.readValue(new File("C:\\Users\\Antonius\\workspaceX\\VaadinTests\\bingo-ct\\src\\main\\java\\de\\person\\PersonData.json"), Person[].class));
+				String resourceFilename = "/de/person/PersonData.json";
+				URL resource = this.getClass().getResource(resourceFilename);
+				if (resource != null) {
+					allPersons = Arrays.asList(mapper.readValue(resource.openStream(), Person[].class));
+				} else {
+					log.info(String.format("Resource %s not found", resourceFilename));
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

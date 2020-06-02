@@ -1,0 +1,16 @@
+/* Some extra styling for header. */
+h1 {
+    color: darkblue;
+    width: 100%;
+    text-align: center;
+}
+
+/* Make layout bit more compact. */
+.message-layout p {
+    margin: 0;
+}
+
+/* We want the chat view to scroll vertically instead. */
+.message-layout {
+    overflow-y: scroll;
+}
